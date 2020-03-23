@@ -31,28 +31,28 @@ namespace BlackBox
             get { return "BlackBoxCommand"; }
         }
 
-
         public const int AREA_PER_HUMAN = 18;
         public const int AREA_PER_FAMILY = 15;
 
         public const float ONE_MEMBER_FAMILY_PERCENT = 0.3F;
-        public const float TWO_MEMBERS_FAMILY_PERCENT = 0.3F;
         public const float THREE_MEMBERS_FAMILY_PERCENT = 0.4F;
+        public const float TWO_MEMBERS_FAMILY_PERCENT = 0.3F;
 
-        public const string ETAK_ID = "etak_id";
-        public const string EHR_ID = "ehr_gid";
         public const string ADDRESS = "ads_lahiaa";
         public const string APARTMENTS_PERHOUSE = "korterelamud_info_Kortereid kokku";
-        public const string UNINHABITED_PERCENT = "e_asustamata_%%";
+        public const string EHR_ID = "ehr_gid";
         public const string ELECTRICITY_WITHOUT_CONTRACT_PERCENT = "e_lepinguta_%";
+        public const string ETAK_ID = "etak_id";
         public const string GOVERNMENT_OWNED_COUNT = "katastrid copy_loobutud_vara_count";
         public const string LIVING_AREA_PERHOUSE = "korterelamud_info_Eluruumide pindala (m2)";
+        public const string UNINHABITED_PERCENT = "e_asustamata_%%";
 
         protected override Result RunCommand(Rhino.RhinoDoc doc, RunMode mode)
         {
-            ObjRef[] srcCurves;
-            var population = new double();
             var apartmentHousesPercetage = new double();
+            var population = new double();
+            ObjRef[] srcCurves;
+
             RhinoGet.GetMultipleObjects("ClosedPolygones", false, ObjectType.Curve, out srcCurves);
             RhinoGet.GetNumber("Insert population", false, ref population, 0, 1000000);
             RhinoGet.GetNumber("Percent of population living in apartment houses", false, ref apartmentHousesPercetage, 0, 100000);
@@ -120,14 +120,13 @@ namespace BlackBox
             var dataDto = new DataDto
             {
                 EtakId = Convert.ToInt32(dict.Where(x => x.Key == ETAK_ID).FirstOrDefault().Value),
-                EhrId = Convert.ToInt32(dict.Where(x => x.Key == EHR_ID).FirstOrDefault().Value),
                 Address = dict.Where(x => x.Key == EHR_ID).FirstOrDefault().Value.ToString(),
                 ApartmentsCount = Convert.ToInt32(dict.Where(x => x.Key == APARTMENTS_PERHOUSE).FirstOrDefault().Value),
-                UnInhabitedPercent = Convert.ToInt32(dict.Where(x => x.Key == UNINHABITED_PERCENT).FirstOrDefault().Value),
-                NoElectricityPercent = Convert.ToInt32(dict.Where(x => x.Key == ELECTRICITY_WITHOUT_CONTRACT_PERCENT).FirstOrDefault().Value),
+                EhrId = Convert.ToInt32(dict.Where(x => x.Key == EHR_ID).FirstOrDefault().Value),
                 GovernmentOwnedCount = Convert.ToInt32(dict.Where(x => x.Key == GOVERNMENT_OWNED_COUNT).FirstOrDefault().Value),
                 LivingAreaPerHouse = Convert.ToInt32(dict.Where(x => x.Key == LIVING_AREA_PERHOUSE).FirstOrDefault().Value),
-
+                NoElectricityPercent = Convert.ToInt32(dict.Where(x => x.Key == ELECTRICITY_WITHOUT_CONTRACT_PERCENT).FirstOrDefault().Value),
+                UnInhabitedPercent = Convert.ToInt32(dict.Where(x => x.Key == UNINHABITED_PERCENT).FirstOrDefault().Value),
             };
 
             return dataDto;
@@ -135,14 +134,15 @@ namespace BlackBox
 
         public class DataDto
         {
-            public int? EtakId { get; set; }
-            public int? EhrId { get; set; }
+            public int EtakId { get; set; }
+
             public string Address { get; set; }
             public int? ApartmentsCount { get; set; }
-            public int? UnInhabitedPercent { get; set; }
-            public int? NoElectricityPercent { get; set; }
+            public int? EhrId { get; set; }
             public int? GovernmentOwnedCount { get; set; }
             public int? LivingAreaPerHouse { get; set; }
+            public int? NoElectricityPercent { get; set; }
+            public int? UnInhabitedPercent { get; set; }
         }
     }
 }
