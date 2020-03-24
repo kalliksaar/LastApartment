@@ -7,6 +7,8 @@ using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Windows.Forms;
+using BlackBox.Forms;
 
 namespace BlackBox
 {
@@ -50,12 +52,10 @@ namespace BlackBox
         protected override Result RunCommand(Rhino.RhinoDoc doc, RunMode mode)
         {
             var apartmentHousesPercetage = new double();
-            var population = new double();
+
             ObjRef[] srcCurves;
 
             RhinoGet.GetMultipleObjects("ClosedPolygones", false, ObjectType.Curve, out srcCurves);
-            RhinoGet.GetNumber("Insert population", false, ref population, 0, 1000000);
-            RhinoGet.GetNumber("Percent of population living in apartment houses", false, ref apartmentHousesPercetage, 0, 100000);
 
             var dicts = new Dictionary<Guid, DataDto>();
             for (var i = 0; i < srcCurves.Count(); i++)
@@ -64,25 +64,45 @@ namespace BlackBox
                 dicts.Add(srcCurves[i].ObjectId, o);
             }
 
-            var optimalLivingArea = GetOptimalLivingArea((int)Math.Round(population), (int)Math.Round(apartmentHousesPercetage));
-            var excistingLivingArea = GetExcistingLivingArea(dicts);
-
-            if (optimalLivingArea > 0 && excistingLivingArea > 0)
+            if (mode == RunMode.Interactive)
             {
-                var overStockPercent = (excistingLivingArea - optimalLivingArea) * 100 / excistingLivingArea;
+                var form = new TestForm2 { StartPosition = FormStartPosition.CenterParent };
+                var dialogResult = form.ShowDialog();
+                RhinoApp.WriteLine("Insert population into form");
 
-                RhinoApp.WriteLine($"Overstock {overStockPercent} percent");
+                //TODO: get this button working
             }
-
             else
             {
-                RhinoApp.WriteLine($"No info to calculate overstock percent");
+                var msg = string.Format("", EnglishName);
+                RhinoApp.WriteLine(msg);
             }
 
             return Result.Success;
         }
 
-        public int GetOptimalLivingArea(int population, int apartmentHousesPercetage)
+        public void DoWork(TestForm2 form, Dictionary<Guid, DataDto> dicts)
+        {
+                var population = form.GetPopulation(form);
+                var optimalLivingArea = GetOptimalLivingArea(population, 0.9F);
+                var excistingLivingArea = GetExcistingLivingArea(dicts);
+
+                if (optimalLivingArea > 0 && excistingLivingArea > 0)
+                {
+                    var overStockPercent = (excistingLivingArea - optimalLivingArea) * 100 / excistingLivingArea;
+
+                    RhinoApp.WriteLine($"Overstock {overStockPercent} percent");
+
+                    form.InsertOverStockValue(form, overStockPercent);
+                }
+
+                else
+                {
+                    RhinoApp.WriteLine($"No info to calculate overstock percent");
+                }
+        }
+
+        public int GetOptimalLivingArea(int population, double apartmentHousesPercetage)
         {
             var optimalArea = new int();
 
