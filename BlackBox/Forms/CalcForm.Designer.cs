@@ -2,7 +2,7 @@
 
 namespace BlackBox.Forms
 {
-    partial class TestForm2
+    partial class CalcForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +37,7 @@ namespace BlackBox.Forms
             this.PopulationLabel = new System.Windows.Forms.Label();
             this.OverstockLabel = new System.Windows.Forms.Label();
             this.OverStockValue = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CalcBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PopulationSlider)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,15 +105,16 @@ namespace BlackBox.Forms
             this.OverStockValue.Size = new System.Drawing.Size(0, 13);
             this.OverStockValue.TabIndex = 9;
             // 
-            // button1
+            // CalcBtn
             // 
-            this.button1.Location = new System.Drawing.Point(224, 224);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Calc";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.CalcBtn_Click);
+            this.CalcBtn.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            this.CalcBtn.Location = new System.Drawing.Point(224, 224);
+            this.CalcBtn.Name = "button1";
+            this.CalcBtn.Size = new System.Drawing.Size(75, 23);
+            this.CalcBtn.TabIndex = 10;
+            this.CalcBtn.Text = "Calc";
+            this.CalcBtn.UseVisualStyleBackColor = true;
+            this.CalcBtn.Click += new System.EventHandler(this.CalcBtn_Click);
             // 
             // TestForm2
             // 
@@ -121,7 +122,7 @@ namespace BlackBox.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelBtn;
             this.ClientSize = new System.Drawing.Size(572, 259);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.CalcBtn);
             this.Controls.Add(this.OverStockValue);
             this.Controls.Add(this.OverstockLabel);
             this.Controls.Add(this.PopulationLabel);
@@ -148,11 +149,10 @@ namespace BlackBox.Forms
         private System.Windows.Forms.Label PopulationLabel;
         private System.Windows.Forms.Label OverstockLabel;
         private System.Windows.Forms.Label OverStockValue;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CalcBtn;
 
 
         #endregion
-
 
     }
 }

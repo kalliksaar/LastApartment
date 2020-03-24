@@ -4,20 +4,20 @@ using System.Windows.Forms;
 
 namespace BlackBox.Forms
 {
-    public partial class TestForm2 : Form
+    public partial class CalcForm : Form
     {
-        public TestForm2()
+        public CalcForm()
         {
             InitializeComponent();
         }
 
-        public int GetPopulation(TestForm2 form)
+        public int GetPopulation(CalcForm form)
         {
             Int32.TryParse(form.PopulationTxtBox.Text, out int population);
             return population;
         }
 
-        public void InsertOverStockValue(TestForm2 form, int value)
+        public void InsertOverStockValue(CalcForm form, int value)
         {
             form.OverStockValue.Text = value.ToString();
         }
